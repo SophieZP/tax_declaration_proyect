@@ -1,0 +1,47 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chat Formulario 210</title>
+    <style>
+      body{font-family: Arial; max-width:760px;margin:30px auto;}
+      #chat{border:1px solid #ddd;padding:10px;height:400px;overflow:auto;}
+      .q{color:darkblue;margin:8px 0;}
+      .a{color:darkgreen;margin:8px 0;}
+    </style>
+  </head>
+  <body>
+    <h2>Asistente — Formulario 210 (DIAN)</h2>
+    <div id="chat"></div>
+
+    <form id="form">
+      <input id="question" placeholder="Escribe tu pregunta sobre el formulario 210..." style="width:80%" />
+      <button>Enviar</button>
+    </form>
+
+    <script>
+      const chat = document.getElementById('chat');
+      const form = document.getElementById('form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const q = document.getElementById('question').value.trim();
+        if(!q) return;
+        const qDiv = document.createElement('div'); qDiv.className='q'; qDiv.innerText = 'Tú: ' + q;
+        chat.appendChild(qDiv);
+        document.getElementById('question').value='';
+
+        const res = await fetch('/ask', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({question:q})
+        }).then(r=>r.json());
+
+        const aDiv = document.createElement('div'); aDiv.className='a';
+        aDiv.innerText = res.answer || JSON.stringify(res);
+        chat.appendChild(aDiv);
+        chat.scrollTop = chat.scrollHeight;
+      });
+    </script>
+  </body>
+</html>

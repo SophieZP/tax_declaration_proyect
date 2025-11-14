@@ -416,3 +416,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Virtual Environments
+env/    
+venv/
+ENV/
+env.bak/
+venv.bak/
+ENV.bak/
+.venv/
+.venv.bak/
+__pypackages__/
